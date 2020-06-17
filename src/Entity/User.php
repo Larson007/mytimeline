@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -55,6 +57,16 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $avatar;
+
+    /**
+     * @ORM\OneToMany(targetEntity=TimeLine::class, mappedBy="users")
+     */
+    private $timeLines;
+
+    public function __construct()
+    {
+        $this->timeLines = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -173,6 +185,37 @@ class User implements UserInterface
     public function setAvatar(?string $avatar): self
     {
         $this->avatar = $avatar;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|TimeLine[]
+     */
+    public function getTimeLines(): Collection
+    {
+        return $this->timeLines;
+    }
+
+    public function addTimeLine(TimeLine $timeLine): self
+    {
+        if (!$this->timeLines->contains($timeLine)) {
+            $this->timeLines[] = $timeLine;
+            $timeLine->setUsers($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTimeLine(TimeLine $timeLine): self
+    {
+        if ($this->timeLines->contains($timeLine)) {
+            $this->timeLines->removeElement($timeLine);
+            // set the owning side to null (unless already changed)
+            if ($timeLine->getUsers() === $this) {
+                $timeLine->setUsers(null);
+            }
+        }
 
         return $this;
     }
