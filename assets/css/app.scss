@@ -1,0 +1,49 @@
+@import url('./bootstrap.min.css');
+
+@font-face {
+    font-family: 'AnkaCoder';
+    src: url('/fonts/AnkaCoder-r.ttf') format('truetype');
+    
+}
+
+body {
+
+    // Style Général
+    background-color: #1d1f28;
+    color: white;
+    font-family: 'AnkaCoder';
+
+    // NavBar
+    nav{
+        background-color: #282a36;
+    }
+}
+
+/* Background Class Color*/
+.bg-body-dark{
+    background-color: #1d1f28;
+    color: white;
+}
+.bg-body-light{
+    background-color: #282a36;
+    color: white;
+}
+
+/* Label */
+.label-theme {
+    background-color: #C574DD;
+}
+
+/* Input Style */
+input[type]{
+    background-color: #282a36;
+    border: none;
+    border-bottom: 2px solid lightslategray;
+    border-radius: 0;
+    color: grey;
+}
+
+input[type]:focus {
+    background-color: #282a36;
+    color: white;
+}
