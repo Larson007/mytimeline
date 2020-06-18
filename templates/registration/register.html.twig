@@ -3,20 +3,25 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
-    {% for flashError in app.flashes('verify_email_error') %}
-        <div class="alert alert-danger" role="alert">{{ flashError }}</div>
-    {% endfor %}
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-6 offset-3">
+            <div class="bg-body-light py-3 px-3">
+                {% for flashError in app.flashes('verify_email_error') %}
+                <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+                {% endfor %}
 
-    <h1>Register</h1>
+                <h1 class="h3 mb-3 font-weight-normal text-center">Inscription</h1>
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.userName) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
-
-        <button type="submit" class="btn">Register</button>
-    {{ form_end(registrationForm) }}
+                {{ form_start(registrationForm) }}
+                <div class="px-2 py-2">{{ form_row(registrationForm.userName, {label: 'Nom d\'utilisateur'}) }}</div>
+                <div class="px-2 py-2">{{ form_row(registrationForm.email, {label: 'Email'}) }}</div>
+                <div class="px-2 py-2">{{ form_row(registrationForm.plainPassword, {label: 'Mot de passe'}) }}</div>
+                <div class="px-2 py-2">{{ form_row(registrationForm.agreeTerms) }}</div>
+                <button type="submit" class="btn btn-lg btn-primary btn-block my-3">Inscription</button>
+                {{ form_end(registrationForm) }}
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

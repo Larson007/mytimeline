@@ -100,6 +100,11 @@ class TimeLine
      */
     private $event;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $slug;
+
     public function __construct()
     {
         $this->themes = new ArrayCollection();
@@ -334,6 +339,18 @@ class TimeLine
                 $event->setTimeline(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }

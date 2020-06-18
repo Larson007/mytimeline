@@ -12,10 +12,16 @@ body {
     background-color: #1d1f28;
     color: white;
     font-family: 'AnkaCoder';
+    p, h1, h2 {
+        font-family: 'AnkaCoder';
+    }
 
     // NavBar
     nav{
         background-color: #282a36;
+        a {
+            color: white !important;
+        }
     }
 }
 
@@ -41,9 +47,19 @@ input[type]{
     border-bottom: 2px solid lightslategray;
     border-radius: 0;
     color: grey;
+    width: 100%;
+}
+
+input[type=checkbox]{
+    background-color: #282a36;
+    border: none;
+    border-bottom: 2px solid lightslategray;
+    border-radius: 0;
+    color: grey;
+    width: 10%;
 }
 
 input[type]:focus {
-    background-color: #282a36;
+    background-color: #606166;
     color: white;
 }
