@@ -1,0 +1,21 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Création d'un template{% endblock %}
+
+{% form_theme form _self %}            {# Import du template bootstrap #}
+
+{% block body %}
+
+    <div class="container">
+        <h1>Créer une nouvelle annonce</h1>
+
+        {{ form_start(form) }}
+
+        {{ form_widget(form) }}
+
+        <button type="submit" class="btn btn-primary">Créer la novuelle annonce</button>
+
+        {{ form_end(form) }}
+    </div>
+
+{% endblock %}
