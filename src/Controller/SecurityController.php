@@ -2,9 +2,13 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Form\AccountType;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
@@ -32,5 +36,38 @@ class SecurityController extends AbstractController
     public function logout()
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+    }
+
+    /**
+     * permet d'editer un profile User
+     *
+     * @Route("account/profile", name="app_profile")
+     *
+     * @return Response
+     */
+    public function profile(Request $request, EntityManagerInterface $manager)
+    {
+        $user = $this->getUser();                               // Permet de recuprer l'utilisateur actuelement connecté
+
+        $form = $this->createForm(AccountType::class, $user);   // Import du formualaire générer d'edition
+
+        $form -> handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager->persist($user);
+            $manager->flush();
+
+            $this->addFlash(
+                'success',
+                "Les modifications ont bien été enregistrés"
+            );
+        }
+
+        
+        
+
+        return $this->render('security/profile.html.twig', [    // Chemin vers le render twig
+            'accountForm' => $form->createView()                       // On passe le formluaire au template Twig pour l'afficher
+        ]);
     }
 }

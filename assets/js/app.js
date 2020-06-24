@@ -12,3 +12,5 @@
 
     // Log pour vérfier si le script est bien charger sur nos page dans le console inspector du navigateur
     console.log('script charger');
+
+    

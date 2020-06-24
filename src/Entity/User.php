@@ -73,6 +73,8 @@ class User implements UserInterface
     public function __construct()
     {
         $this->timeLines = new ArrayCollection();
+        $this->avatar =  'https://randomuser.me/api/portraits/lego/1.jpg'; // Avatar par défault lors de l'inscription
+
     }
 
     public function getId(): ?int
@@ -99,7 +101,7 @@ class User implements UserInterface
      */
     public function getUsername(): string
     {
-        return (string) $this->email;
+        return (string) $this->userName;
     }
 
     /**

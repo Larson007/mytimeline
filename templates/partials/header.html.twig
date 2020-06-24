@@ -1,35 +1,63 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-body-light">
-		<a class="navbar-brand" href="{{ path('accueil') }}"><img src="/images/logo.png" alt=""></a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01"
-			aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
+<nav class="navbar navbar-expand-lg navbar-dark bg-body-light px-5 text-uppercase row">
+    <a class="navbar-brand" href="{{ path('accueil') }}"><img src="/images/logo.png" alt="" class="logo img-fluid center"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01"
+        aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
-		<div class="collapse navbar-collapse" id="navbarColor01">
-			<ul class="navbar-nav mr-auto">
-				<li class="nav-item">
-					<a class="nav-link" href="{{ path('accueil') }}">Accueil
-						<span class="sr-only">(current)</span>
-					</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="{{ path('timelines') }}">TimeLines</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="{{ path('timeline_create') }}">Créer une TimeLine</a>
-				</li>
-			</ul>
-			<ul class="navbar-nav ml-auto">
-				{% if app.user %}
-				<li class="nav-item"><a href="{{ path('app_logout') }}" class="nav-link">Déconnexion</a></li>
-				{% else %}
-				<li class="nav-item"><a href="{{ path('app_register') }}" class="nav-link">Inscription</a></li>
-				<li class="nav-item"><a href="{{ path('app_login') }}" class="nav-link">Connexion</a></li>
-				{% endif %}
-			</ul>
-			<form class="form-inline my-2 my-lg-0">
-				<input class="form-control mr-sm-2" type="text" placeholder="Search">
-				<button class="btn btn-secondary my-2 my-sm-0" type="submit">Rechercher</button>
-			</form>
-		</div>
-	</nav>
+    <div class="collapse navbar-collapse" id="navbarColor01">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item px-3">
+                <a class="nav-link" href="{{ path('accueil') }}">Accueil
+                    <span class="sr-only">(current)</span>
+                </a>
+            </li>
+            <li class="nav-item px-3">
+                <a class="nav-link" href="{{ path('timelines') }}">TimeLines</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+            {% if app.user %}
+            <li class="nav-item dropdown">
+                {# data-toggle="dropdown" pour préciser au lien <a> que celui ci ouvre un drop down et non un lien vers une autre page #}
+                <a href="#" class="nav-link dropdown-toggle" id="accountDropDownLink" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    <img src="{{ app.user.avatar }}" alt="Avatar de {{ app.user.firstName }}"
+                        class="avatar avatar-mini">
+                    {{ app.user.userName }}
+                </a>
+                {#  aria-labelledby fais le lien avec l'id du <a> précédent #}
+                <div class="dropdown-menu dropdown-menu-right dropdown-custom" aria-labelledby="accountDropDownLink">
+
+                    {# Ajout du lien vers la création d'un article dans le menu dropdown #}
+                    <a href="{{ path('timeline_create') }}" class="dropdown-item">Créer une TimeLine</a>
+
+                    <div class="dropdown-divider"></div>
+                    {#
+                        <a href="{{ path('account_index') }}" class="dropdown-item">Mon compte</a>
+#}
+                    <a href="{{ path('app_profile') }}" class="dropdown-item">Modifier mon profil</a>
+
+                    <div class="dropdown-divider"></div>
+
+                    <a href="{{ path('app_logout') }}" class="dropdown-item">Déconnexion</a>
+                </div>
+            </li>
+
+            {% else %}
+            <li class="nav-item"><a href="{{ path('app_register') }}" class="nav-link">Inscription</a></li>
+            <li class="nav-item"><a href="{{ path('app_login') }}" class="nav-link">Connexion</a></li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
+
+{% for label, messages in app.flashes %}
+<div class="container">
+    <div class="alert alert-{{ label }}">
+        {% for message in messages %}
+            <p>{{ message | raw }}</p>
+        {% endfor %}
+    </div>
+</div>
+{% endfor %}

@@ -36,9 +36,6 @@ class TimeLineController extends AbstractController
     {
         $timeline = new TimeLine();
         $form = $this->createForm(TimeLineType::class, $timeline);
-        $form ->handleRequest($request);
-
-
 
         return $this->render('timeline/new.html.twig', [
             'form' => $form->createView()

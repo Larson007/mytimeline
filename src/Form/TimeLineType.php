@@ -30,7 +30,7 @@ class TimeLineType extends AbstractType
             //->add('unique_id')
             //->add('slug')
             //->add('users')
-            ->add('themes')
+            //->add('themes')
         ;
     }
 
