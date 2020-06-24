@@ -94,6 +94,10 @@ class User implements UserInterface
         return $this;
     }
 
+    public function getFullName(){                      // on crée une variable FullName qui concatene firstName et LastName
+        return "{$this->firstName} {$this->lastName}";
+    }
+
     /**
      * A visual identifier that represents this user.
      *

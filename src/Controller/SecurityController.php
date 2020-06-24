@@ -3,13 +3,18 @@
 namespace App\Controller;
 
 use App\Form\AccountType;
+use App\Entity\PasswordUpdate;
+use App\Form\PasswordUpdateType;
+use Symfony\Component\Form\FormError;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class SecurityController extends AbstractController
 {
@@ -62,12 +67,73 @@ class SecurityController extends AbstractController
                 "Les modifications ont bien été enregistrés"
             );
         }
-
-        
-        
-
         return $this->render('security/profile.html.twig', [    // Chemin vers le render twig
             'accountForm' => $form->createView()                       // On passe le formluaire au template Twig pour l'afficher
+        ]);
+    }
+
+    /**
+     * Permet de modifier le MDP
+     * 
+     * @Route("/account/password-update", name="app_password-update")
+     * 
+     * @IsGranted("ROLE_USER")
+     *
+     * @return Response
+     */
+    public function updatePassword(Request $request, UserPasswordEncoderInterface $encoder, EntityManagerInterface $manager)
+    {   //  Instancie la variable passwordUpdate a partir de la fausse Entity PasswordUpdate
+        $passwordUpdate = new PasswordUpdate;
+
+        // On importe l'utilisateur qui est actuellement connecté
+        $user = $this->getUser();
+
+        //  On dde a symfony de créée un formulaire a partir fichier FORM/PasswordUpdateType avec les donnée de l'instantiation de PasswordUpdate
+        $form = $this->createForm(PasswordUpdateType::class, $passwordUpdate);
+
+        //  On instancie une Requête pour communiquer avec la BDD importer depuis Request et stocker dans $request 
+        $form->handleRequest($request);
+
+        // On vérifie que l'utilisateur a bien respecter les @Assert de la fausse Entity PasswordUpdate
+        if($form->isSubmitted() && $form->isValid()){
+
+            // Vérifier que l'ancien MDP soit le même que celui de l'utilisateur actuellement connecté via la fonction PHP  qui compare le MDP Non Hasher et Hasher : password_verify(NoHash, Hash)
+            if(!password_verify($passwordUpdate->getOldPassword(), $user->getPassword())){ // le ! permet d'inverser la question (si le MDP no HASH N'EST PAS = MDP HASH)
+                
+                //  GESTION DES ERREURS :
+                //  $form->get('#') permet de cibler un champs précis de notre formualaire
+                //  addError permet de faire passer un msg personnaliser en cas d'erreur 
+                $form->get('oldPassword')->addError(new FormError("Le mot de passe que vous avez tapper n'est pas votre mot de passe actuel"));
+
+                // SI OK : MDP noHASH = MDP HASH
+            }   else {
+                $newPassword = $passwordUpdate->getNewPassword();
+
+                //  On lui dit d'encoder le new MDP dans le MDP actuel
+                $password = $encoder->encodePassword($user, $newPassword);
+
+                // On envoi a l'Entity User le New MDP a la place de l'ancien 
+                $user->setPassword($password);
+
+                //  On sauvegarde les changements
+                $manager->persist($user);
+
+                //  On envoi les nvlle donnée ds la BDD
+                $manager->flush();
+
+                // On affiche un msg si tous a bien fonctionner
+                $this->addFlash(
+                    'success',
+                    "Votre mot de passe a bien été modifié"
+                );
+
+                // On fini par rediriger vers la page d'accueil
+                return $this->redirectToRoute('accueil');
+            } 
+        }
+
+        return $this->render('security/password.html.twig', [
+            'form' => $form->createView()                       // On oublie pas d'envoyer le formulaire stocker dans $form vers le template ! 
         ]);
     }
 }
