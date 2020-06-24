@@ -1,0 +1,13 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Page non trouvée{% endblock %}
+
+{% block body %}
+<div class="container form-view mt-5">
+    <h1>Oups ! la page que vous rechercher n'existe pas !</h1>
+    <p class="my-5">Vous pouvez retouner à l'accueil ou allez directement vers nos annonces</p>
+
+    <a href="{{ path('accueil') }}" class="btn btn-primary">Retour a l'accueil</a>
+    <a href="{{ path('timelines') }}" class="btn btn-success">Index Timelines</a>
+</div>
+{% endblock %}

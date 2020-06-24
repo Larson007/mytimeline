@@ -1,0 +1,23 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Vous n'avez pas le droit d'accéder à cette ressource{% endblock %}
+
+{% block body %}
+
+<div class="container form-view mt-5">
+
+    <h1>Oups ! Vous n'avez rien a faire ici !</h1>
+
+    <div class="alert alert-danger my-5">
+    
+        <p>Vous n'avez pas le droit d'acceder à cette ressource !</p>
+
+        {# Message personnalisé en fonction des restrictions d'accèes #}
+        <p>{{exception.message}}</p>
+
+    </div>
+
+    <a href="{{ path('accueil') }}" class="btn btn-primary">Retour a l'accueil</a>
+
+</div>
+{% endblock %}

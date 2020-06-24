@@ -70,11 +70,17 @@ class User implements UserInterface
      */
     private $slug;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Role::class, mappedBy="users")
+     */
+    private $userRole;
+
     public function __construct()
     {
         $this->timeLines = new ArrayCollection();
         $this->avatar =  'https://randomuser.me/api/portraits/lego/1.jpg'; // Avatar par défault lors de l'inscription
 
+        $this->userRole = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -111,13 +117,17 @@ class User implements UserInterface
     /**
      * @see UserInterface
      */
-    public function getRoles(): array
+    public function getRoles()
     {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
+        // On récupère le role non pas sous forme de tableau mais en string via map()
+        $roles = $this->userRole->map(function($role){
+            return $role->getTitle();
+        })->toArray();
+
+        // Donne a tous les utilisateur le ROLE_USER
         $roles[] = 'ROLE_USER';
 
-        return array_unique($roles);
+        return $roles;
     }
 
     public function setRoles(array $roles): self
@@ -257,6 +267,34 @@ class User implements UserInterface
     public function setSlug(?string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Role[]
+     */
+    public function getUserRole(): Collection
+    {
+        return $this->userRole;
+    }
+
+    public function addUserRole(Role $userRole): self
+    {
+        if (!$this->userRole->contains($userRole)) {
+            $this->userRole[] = $userRole;
+            $userRole->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserRole(Role $userRole): self
+    {
+        if ($this->userRole->contains($userRole)) {
+            $this->userRole->removeElement($userRole);
+            $userRole->removeUser($this);
+        }
 
         return $this;
     }

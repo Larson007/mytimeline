@@ -1,0 +1,37 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Administration des TimeLines{% endblock %}
+
+{% block body %}
+<div class="container admin-table form-view">
+    <h1 class="my-5">Gestion des annonces</h1>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Titre</th>
+                <th>Auteur</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {# On boucle sur chaque chronologie "timeline" du tableau "timelines" importer depuis le Controller #}
+            {% for timeline in timelines %}
+            <tr>
+                <td>{{ timeline.id }}</td>
+                <td>{{ timeline.title }}</td>
+                <td>
+                    <img src="{{ timeline.users.avatar }}" alt="Avatar de {{ timeline.users.fullName }}"
+                        class="avatar avatar-micro mr-2"> {{ timeline.users.fullName }}
+                </td>
+                <td>{{ timeline.users.fullName }}</td>
+                <td>
+                    <a href="#" class="btn btn-primary"><i class="fas fa-edit"></i></a>
+                    <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

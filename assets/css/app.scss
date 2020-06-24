@@ -11,6 +11,7 @@ body {
     background-color: #1d1f28;
     color: white;
     font-family: 'AnkaCoder';
+    font-weight: bold;
 
 
     p,
@@ -22,10 +23,12 @@ body {
     // NavBar
     nav {
         background-color: #282a36;
+
         .logo {
             max-width: 60%;
             height: auto;
         }
+
         a {
             color: white !important;
             font-size: 17px !important;
@@ -51,6 +54,21 @@ body {
 /* Label */
 .label-theme {
     background-color: #C574DD;
+    text-transform: uppercase;
+    color: #282a36;
+    font-weight: bold;
+}
+.label-context {
+    background-color: #C4E791;
+    text-transform: uppercase;
+    color: #282a36;
+    font-weight: bold;
+}
+.label-centuary {
+    background-color: #FECA72;
+    text-transform: uppercase;
+    color: #282a36;
+    font-weight: bold;
 }
 
 /* Input Style */
@@ -114,7 +132,7 @@ input[type]:focus {
     }
 }
 
-.badge-theme{
+.badge-theme {
 
     background-color: red;
     border: 2px solid black;
@@ -124,15 +142,37 @@ input[type]:focus {
     font-size: 1rem;
 }
 
-.rs-logo{
+.rs-logo {
     max-width: 35px;
     height: auto;
 }
 
-.form-view{
+.form-view {
     height: 100vh !important;
 }
 
-.accord-terms{
+.accord-terms {
     font-size: 12px;
+}
+
+/**Regle le bug du carousel indicator de new**/
+.carousel-indicators-custom {
+    bottom: -50px !important;
+}
+
+
+/*****Admin Style****/
+
+/***Admin Dashboard***/
+.admin-table * {
+    color: white;
+
+    thead,
+    tbody {
+        border: 2px solid white;
+    }
+}
+.logout-color{
+    color: black !important;
+    font-weight: bold;
 }

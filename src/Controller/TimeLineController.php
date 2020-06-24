@@ -30,6 +30,7 @@ class TimeLineController extends AbstractController
      * 
      * @IsGranted("ROLE_USER")
      * 
+     * 
      * @return Response
      */
     public function create (Request $request)
